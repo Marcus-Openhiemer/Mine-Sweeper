@@ -1,3 +1,21 @@
-h1 {
-    color: red;
+:root {
+    --bg-primary: radial-gradient(hsl(28, 100%, 51%), hsl(0, 91%, 41%));
+    --bg-secondary: linear-gradient(hsl(26, 100%, 50%), hsl(51, 100%, 45%));
+
+    --bg-opened-tile: hsl(0, 0%, 100%);
+    --border-opened-tile: hsl(0, 0%, 44%);
+    --bg-unopened-tile: hsl(40, 100%, 65%);
+    --border-unopened-tile: hsl(39, 37%, 53%);
+    --border-radius: 16px;
+
+    /* Shadows */
+    --shadow: inset 10px 10px 30px 0 hsla(0,0%,100%, 50%), 
+        20px 15px 30px 0 hsla(0,0%,0%, 33%);
+    --shadow-text: 10px 15px 20px hsla(0,0%,0%, 33%);
+
+    /* Font-family */
+    --font-family: 'Molen Friend Demo', sans-serif;
+
+    --width: 1080px;
+    --height: 1920px;
 }
