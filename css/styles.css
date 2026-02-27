@@ -6,16 +6,72 @@
     --border-opened-tile: hsl(0, 0%, 44%);
     --bg-unopened-tile: hsl(40, 100%, 65%);
     --border-unopened-tile: hsl(39, 37%, 53%);
-    --border-radius: 16px;
-
+    --border-radius: 5px;
+    
+    /* Hover effects */
+    --bg-unopened-tile-hover: hsl(40, 100%, 50%);
+    --bg-opened-tile-hover: hsl(0, 0%, 90%);
     /* Shadows */
-    --shadow: inset 10px 10px 30px 0 hsla(0,0%,100%, 50%), 
-        20px 15px 30px 0 hsla(0,0%,0%, 33%);
-    --shadow-text: 10px 15px 20px hsla(0,0%,0%, 33%);
+    --shadow: inset 3.3px 3.3px 9.9px 0 hsla(0,0%,100%, 50%), 
+        6.6px 5px 9.9px 0 hsla(0,0%,0%, 33%);
+    --shadow-text: 3.3px 5px 6.6px hsla(0,0%,0%, 33%);
 
     /* Font-family */
     --font-family: 'Molen Friend Demo', sans-serif;
+}
 
-    --width: 1080px;
-    --height: 1920px;
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* typography */
+
+html {
+    font-size: 62.5%;
+    font-family: var(--font-family);
+}
+
+body {
+    background: var(--bg-primary) no-repeat center center/cover;
+    font-size: 2.6rem;
+    min-height: 100vh;
+}
+
+p {
+    margin: 0;
+}
+
+/* tiles */
+
+.tile {
+    width: 100%;
+    aspect-ratio: 1/1;
+    border-radius: var(--border-radius); 
+    text-align: center;
+    align-content: center;
+    box-shadow: var(--shadow);
+    text-shadow: var(--shadow-text);
+    cursor: pointer;
+    transition: background-color .4s ease, color .4s ease;
+}
+
+.tile--opened {
+    background-color: var(--bg-opened-tile);
+    border: 1px solid var(--border-opened-tile);
+    -webkit-text-stroke: .5px var(--border-opened-tile);
+    color: #5E34EA;
+}
+
+.tile--opened:hover {
+    background-color: var(--bg-opened-tile-hover);
+    color: #522ad3;
+}
+
+.tile--unopened {
+    background-color: var(--bg-unopened-tile);
+    border: 1px solid var(--border-unopened-tile);
+}
+
+.tile--unopened:hover {
+    background-color: var(--bg-unopened-tile-hover);
 }
