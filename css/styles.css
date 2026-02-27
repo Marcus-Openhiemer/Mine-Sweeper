@@ -24,6 +24,11 @@
     box-sizing: border-box;
 }
 
+img {
+    width: 100%;
+    object-fit: cover;
+}
+
 /* typography */
 
 html {
@@ -47,12 +52,21 @@ p {
     width: 100%;
     aspect-ratio: 1/1;
     border-radius: var(--border-radius); 
-    text-align: center;
-    align-content: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     box-shadow: var(--shadow);
     text-shadow: var(--shadow-text);
     cursor: pointer;
     transition: background-color .4s ease, color .4s ease;
+}
+
+.tile img, .tile p {
+    transition: height .2s, opacity .2s;
+}
+
+.tile:has(img) {
+    padding: 0 0 .5rem .5rem;
 }
 
 .tile--opened {
@@ -74,4 +88,30 @@ p {
 
 .tile--unopened:hover {
     background-color: var(--bg-unopened-tile-hover);
+}
+
+.tile--unopened--flagged {
+    background-color: var(--bg-unopened-tile);
+    border: 1px solid var(--border-unopened-tile);
+}
+
+.tile--unopened * {
+    height: 0;
+    opacity: 0;
+}
+
+.tile--opened * {
+    height: auto;
+    opacity: 1;
+}
+
+/* grid */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(10, 3.5rem);
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+    gap: 1px;
 }
