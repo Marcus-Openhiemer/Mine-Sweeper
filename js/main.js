@@ -1,9 +1,12 @@
 const table = document.getElementById('table');
-const easyModeGrid = [];
+const grid = [];
+const level = document.getElementById('selectLevel');
 
-for (let i = 0; i < 10; i++) {
-    const gridRow = new Array(10).fill(0);
-    easyModeGrid.push(gridRow);
+function makeGrid(row) {
+    for (let i = 0; i < row; i++) {
+        const gridRow = new Array(10).fill(0);
+        grid.push(gridRow);
+    }
 }
 
 function displayTable(gridRows, gridCols) {
@@ -11,22 +14,70 @@ function displayTable(gridRows, gridCols) {
         for(let col = 0; col < gridCols; col++) {
             const tile = document.createElement('div');
             tile.classList.add('tile', 'tile--unopened');
-            if(easyModeGrid[row][col] !== 'b' && easyModeGrid[row][col] !== 0)
-                tile.innerHTML = `<p class="tile__number">${easyModeGrid[row][col]}</p>`
-            else if (easyModeGrid[row][col] === 'b')
+            if(grid[row][col] !== 'b' && grid[row][col] !== 0)
+                tile.innerHTML = `<p class="tile__number">${grid[row][col]}</p>`
+            else if (grid[row][col] === 'b')
                 tile.innerHTML = `<img src="img/bomb.png" alt="">`;
             tile.dataset.row = row;
             tile.dataset.col = col;
+            designNumbers(tile);
             table.appendChild(tile);
         }
     }
 }
 
+function designNumbers(tile) {
+    const p = tile.querySelector('.tile__number');
+    if(!p) return;
+    const number = parseInt(p.textContent);
+    if(number === 1) p.style.color = '#5E34EA';
+    if(number === 2) p.style.color = '#218B25';
+    if(number === 3) p.style.color = '#FF0C00';
+    if(number === 4) p.style.color = '#740532';
+    if(number === 5) p.style.color = '#17A34A';
+    if(number === 6) p.style.color = '#B91557';
+    if(number === 7) p.style.color = '#9A23A2';
+    if(number === 8) p.style.color = '#0F139B';
+    if(number === 9) p.style.color = '#11CEAE';
+}
+
+// Display grid based on the level chosen
+function selectLevel() {
+    const selectedLevel = level.value;
+    let rows;
+    let cols;
+
+    if(selectedLevel === 'beginner') {
+        rows = 10;
+        cols = 10;
+        grid.totalBombs = 13;
+    }
+    else if(selectedLevel === 'intermediate') {
+        rows = 13;
+        cols = 10;
+        grid.totalBombs = 13;
+    }
+    else if(selectedLevel === 'advance') {
+        rows = 17;
+        cols = 10;
+        grid.totalBombs = 35;
+    }
+    table.innerHTML = '';
+    table.style.pointerEvents = 'auto';
+    grid.length = 0;
+
+    makeGrid(rows);
+    initializeBombs(grid.totalBombs, grid);
+    initializeGridCells(grid);
+    displayTable(rows,cols);
+    addEventListeners();
+}
+
 function initializeBombs(bombs, array) {
     let bombCount = 0;
     while(bombCount !== bombs) {
-        let bombRow = Math.floor(Math.random() * (array[0].length));
-        let bombCol = Math.floor(Math.random() * (array.length));
+        let bombRow = Math.floor(Math.random() * (array.length));
+        let bombCol = Math.floor(Math.random() * (array[0].length));
         if(array[bombRow][bombCol] !== 'b') {
             array[bombRow][bombCol] = 'b';
             bombCount++;
@@ -49,7 +100,7 @@ function countBombs(gridRow, gridCol, grid) {
 function initializeGridCells (grid) {
     for(let gridRow = 0; gridRow < grid.length; gridRow++) {
         for(let gridCol = 0; gridCol < grid[0].length; gridCol++) {
-            if(grid[gridRow][gridCol] === 'b') continue;
+            if(grid[gridRow][gridCol] === 'b') continue; 
             
             grid[gridRow][gridCol] = countBombs(gridRow,gridCol,grid);
         }
@@ -57,22 +108,22 @@ function initializeGridCells (grid) {
 }
 
 function revealTiles(row, col) {
-    if((row < 0 || row >= easyModeGrid.length) || (col < 0 || col >= easyModeGrid[0].length))
+    if((row < 0 || row >= grid.length) || (col < 0 || col >= grid[0].length))
         return;
 
     const tile = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
 
-    if(!tile.classList.contains('tile--opened') && !tile.classList.contains('tile--unopened--flagged'))
-        tile.classList.replace('tile--unopened', 'tile--opened');
-    else
+    if(!tile || tile.classList.contains('tile--opened') || tile.classList.contains('tile--unopened--flagged'))
         return;
+    tile.classList.remove('tile--unopened');
+    tile.classList.add('tile--opened');
 
-    if(easyModeGrid[row][col] === 'b') {
+    if(grid[row][col] === 'b') {
         alert('BOOM! Game Over!');
         revealBombs();
     }
 
-    if(easyModeGrid[row][col] === 0)
+    if(grid[row][col] === 0)
         for(let i = row -1; i <= row + 1; i++)
             for(let j = col - 1; j <= col + 1; j++) {
                 if(i === row && j === col) 
@@ -82,10 +133,12 @@ function revealTiles(row, col) {
 }
 
 function revealBombs() {
-    for (let row = 0; row < easyModeGrid.length; row++) {
-        for(let col = 0; col < easyModeGrid[0].length; col++) {
-            if(easyModeGrid[row][col] === 'b') {
+    for (let row = 0; row < grid.length; row++) {
+        for(let col = 0; col < grid[0].length; col++) {
+            if(grid[row][col] === 'b') {
                 const tile = document.querySelector(`[data-row='${row}'][data-col='${col}']`);
+                if(tile.classList.contains('tile--unopened--flagged'))
+                    tile.innerHTML = tile.oldContent;
                 tile.classList.remove('tile--unopened');
                 tile.classList.remove('tile--unopened--flagged');
                 tile.classList.add('tile--opened');
@@ -97,38 +150,38 @@ function revealBombs() {
 
 function isGameOver() {
     const unopenedTiles = document.querySelectorAll('.tile--unopened, .tile--unopened--flagged');
-    return unopenedTiles.length === 10;
+    return unopenedTiles.length === grid.totalBombs;
 }
 
-initializeBombs(10, easyModeGrid);
-initializeGridCells(easyModeGrid);
-displayTable(10, 10);
-
-const tiles = document.getElementsByClassName('tile');
-for(let tile of tiles) {
-    tile.addEventListener('click', () => {
-        const r = parseInt(tile.dataset.row);
-        const c = parseInt(tile.dataset.col);
-        revealTiles(r,c);
-        if(isGameOver()) {
-            alert("you won");
-            revealBombs();
-        }
-    })
-
-    tile.addEventListener('contextmenu', (event) => {
-        event.preventDefault();
-        let isFlagged = tile.classList.contains('tile--unopened--flagged');
-        let isUnopened = tile.classList.contains('tile--unopened');
-        if(!isFlagged && isUnopened) {
-            tile.oldContent = tile.innerHTML;
-            tile.classList.replace('tile--unopened', 'tile--unopened--flagged');
-            tile.innerHTML = `<img src="img/flag.png" alt="">`;
-        }
-        else if (isFlagged){
-            tile.classList.replace('tile--unopened--flagged', 'tile--unopened');
-            tile.innerHTML = tile.oldContent;
-        }
-    })
+function addEventListeners() {
+    const tiles = document.getElementsByClassName('tile');
+    for(let tile of tiles) {
+        tile.addEventListener('click', () => {
+            const r = parseInt(tile.dataset.row);
+            const c = parseInt(tile.dataset.col);
+            revealTiles(r,c);
+            if(isGameOver()) {
+                alert("you won");
+                revealBombs();
+            }
+        })
+    
+        tile.addEventListener('contextmenu', (event) => {
+            event.preventDefault();
+            let isFlagged = tile.classList.contains('tile--unopened--flagged');
+            let isUnopened = tile.classList.contains('tile--unopened');
+            if(!isFlagged && isUnopened) {
+                tile.oldContent = tile.innerHTML;
+                tile.classList.replace('tile--unopened', 'tile--unopened--flagged');
+                tile.innerHTML = `<img src="img/flag.png" alt="">`;
+            }
+            else if (isFlagged){
+                tile.classList.replace('tile--unopened--flagged', 'tile--unopened');
+                tile.innerHTML = tile.oldContent;
+            }
+        })
+    }
 }
 
+selectLevel();
+level.addEventListener('change', selectLevel);
