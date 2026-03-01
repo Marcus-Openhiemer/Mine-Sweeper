@@ -10,6 +10,20 @@ let timerInterval;
 let isTimerRunning = false;
 let seconds = 0;
 
+let isFlagMode = false;
+const modeToggler = document.getElementById('mode-toggler');
+
+function changeFlagMode() {
+    if(isFlagMode) {
+        isFlagMode = false;
+        modeToggler.textContent = '🔍';
+    }
+    else {
+        isFlagMode = true;
+        modeToggler.innerHTML = `<img src="img/flag.png" alt="">`;
+    }
+}
+
 function startTimer() {
     if(isTimerRunning) return;
     isTimerRunning = true;
@@ -97,12 +111,13 @@ function selectLevel() {
         grid.totalBombs = 22;
     }
     else if(selectedLevel === 'advance') {
-        rows = 17;
+        rows = 16;
         cols = 10;
-        grid.totalBombs = 35;
+        grid.totalBombs = 32;
     }
     table.innerHTML = '';
     table.style.pointerEvents = 'auto';
+    table.style.setProperty('--cols', cols);
     grid.length = 0;
 
     makeGrid(rows);
@@ -199,14 +214,33 @@ function addEventListeners() {
     const tiles = document.getElementsByClassName('tile');
     for(let tile of tiles) {
         tile.addEventListener('click', () => {
-            startTimer();
-            const r = parseInt(tile.dataset.row);
-            const c = parseInt(tile.dataset.col);
-            revealTiles(r,c);
-            if(isGameOver()) {
-                stopTimer();
-                alert("you won");
-                revealBombs();
+            if(!isFlagMode) {
+                startTimer();
+                const r = parseInt(tile.dataset.row);
+                const c = parseInt(tile.dataset.col);
+                revealTiles(r,c);
+                if(isGameOver()) {
+                    stopTimer();
+                    alert("you won");
+                    revealBombs();
+                }
+            }
+            else {
+                let isFlagged = tile.classList.contains('tile--unopened--flagged');
+                let isUnopened = tile.classList.contains('tile--unopened');
+                if(!isFlagged && isUnopened) {
+                    tile.oldContent = tile.innerHTML;
+                    tile.classList.replace('tile--unopened', 'tile--unopened--flagged');
+                    tile.innerHTML = `<img src="img/flag.png" alt="">`;
+                    currentFlag++;
+                    displayRemainingBombs();
+                }
+                else if (isFlagged){
+                    tile.classList.replace('tile--unopened--flagged', 'tile--unopened');
+                    tile.innerHTML = tile.oldContent;
+                    currentFlag--;
+                    displayRemainingBombs();
+                }
             }
         })
     
@@ -233,3 +267,4 @@ function addEventListeners() {
 
 selectLevel();
 level.addEventListener('change', selectLevel);
+modeToggler.addEventListener('click', changeFlagMode);

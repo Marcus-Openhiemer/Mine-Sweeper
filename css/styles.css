@@ -108,10 +108,98 @@ p {
 /* grid */
 
 .grid {
-    display: grid;
-    grid-template-columns: repeat(10, 3.5rem);
-    justify-content: center;
     align-items: center;
-    justify-items: center;
+    display: grid;
     gap: 1px;
+    grid-template-columns: repeat(var(--cols, 10), 3.5rem);
+    justify-content: center;
+    justify-items: center;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Status Bar */
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    gap: 0 2rem;
+    align-items: center;
+    background: var(--bg-secondary);
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.game-header__stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+    text-shadow: var(--shadow-text);
+}
+
+.game-header__difficulty {
+    appearance: none;
+    background: var(--bg-primary);
+    border-radius: var(--border-radius);
+    border: 1px solid #F14646;
+    color: hsl(0, 0%, 90%);
+    cursor: pointer;
+    font-size: 1.8rem;
+    outline: 0;
+    padding: .5rem 1rem;
+    text-align: center;
+    text-shadow: 2px 2px 3px hsla(0,0%,0%, 33%);
+}
+
+.game-header__difficulty option {
+    background: #d82b08;
+    color: hsl(0, 0%, 90%);
+}
+
+.game-header__back {
+    background-color: transparent;
+    outline: 0;
+    border: 0;
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    cursor: pointer;
+}
+
+.img-wrapper {
+    width: 35px;
+    height: 35px;
+}
+
+.game-header__bomb-count {
+    align-self: flex-end;
+}
+
+.game-header__timer {
+    align-self: flex-end;
+    margin-left: 2rem;
+}
+
+/* Mode-toggler */
+
+.mode-toggler {
+    align-items: center;
+    background-color: var(--bg-opened-tile);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-opened-tile);
+    bottom: 40px;
+    box-shadow: var(--shadow);
+    display: flex;
+    font-size: 3.2rem;
+    height: 4.2rem;
+    justify-content: center;
+    padding: .5rem;
+    position: absolute;
+    right: 28px;
+    width: 4.2rem;
 }
