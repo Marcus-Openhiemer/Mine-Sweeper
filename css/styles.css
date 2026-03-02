@@ -217,7 +217,7 @@ body.home {
 
 /* Home page */
 
-.bg-title {
+.home__bg-title {
     align-items: center;
     display: flex;
     flex-direction: column;
@@ -226,7 +226,7 @@ body.home {
     gap: 2rem;
 }
 
-.bg-title .blast {
+.home__bg-title .blast {
     position: absolute;
     inset: 50% auto auto 50%;
     width: min(120%, 900px);
@@ -246,22 +246,22 @@ h1 {
     text-transform: uppercase;
 }
 
-.title-first-line {
+.home__title-first-line {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.bomb {
+.home__bomb {
     width: clamp(4rem, 20vw, 11rem);
     margin: 0 0.1em;
 }
 
-.button-wrapper {
+.home__btn-wrapper {
     position: relative;
 }
 
-.play-btn {
+.home__play-btn {
     all: unset;
     cursor: pointer;
     animation: play-btn 1s ease-in-out infinite alternate;
@@ -278,11 +278,11 @@ h1 {
     will-change: transform;
 }
 
-.play-btn:hover {
+.home__play-btn:hover {
     background-color: hsl(16, 88%, 48%);
 }
 
-.joystick {
+.home__joystick {
     position: absolute;
     right: clamp(-10%, -8vw, -15%);
     top: 30%;
@@ -301,4 +301,39 @@ h1 {
     to {
         transform: translateY(15px);
     }
+}
+
+/* buttons */
+.btn {
+    border-radius: 12px;
+    outline: 0;
+    width: 100px;
+    padding: .5rem 1rem;
+    line-height: 1;
+    box-shadow: inset 5px 5px 10px hsla(0,0%,100%, 20%),
+        0 5px 5px hsla(0,0%,0%, 30%);
+    text-shadow: 0 -2px 10px hsla(0,0%,100%, 18%)
+    ,0 5px 5px hsla(0,0%,0%, 20%);
+    font-size: 2.2rem;
+    transition: .4s ease;
+}
+
+.btn--play {
+    border: 4px solid #5c9e29;
+    background-color: hsl(92, 98%, 42%);
+    color: #fff;
+}
+
+.btn--play:hover {
+    background-color: hsl(92, 98%, 38%);
+}
+
+.btn--quite {
+    border: 4px solid #811000;
+    background-color: #d40000;
+    color: #fff;
+}
+
+.btn--quite:hover {
+    background-color: hsl(0, 100%, 38%);
 }
