@@ -40,10 +40,21 @@ body {
     background: var(--bg-primary) no-repeat center center/cover;
     font-size: 2.6rem;
     min-height: 100vh;
+    max-height: 100vh;
 }
 
 p {
     margin: 0;
+}
+
+/* Home body */
+
+body.home {
+    background: url('../img/Asset\ 3.webp') center center / cover no-repeat;
+    display: grid;
+    place-items: center;
+    font-family: 'Constance', sans-serif;
+    overflow-x: hidden;
 }
 
 /* tiles */
@@ -202,4 +213,92 @@ p {
     position: absolute;
     right: 28px;
     width: 4.2rem;
+}
+
+/* Home page */
+
+.bg-title {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    text-align: center;
+    gap: 2rem;
+}
+
+.bg-title .blast {
+    position: absolute;
+    inset: 50% auto auto 50%;
+    width: min(120%, 900px);
+    height: auto;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+h1 {
+    font-size: clamp(2rem, 18vw, 10rem);
+    line-height: 0.9;
+    margin: 0;
+    color: #fff;
+    -webkit-text-stroke: 2px #f15a24;
+    text-shadow: 0.07em 0.07em 0 #000;
+    text-transform: uppercase;
+}
+
+.title-first-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bomb {
+    width: clamp(4rem, 20vw, 11rem);
+    margin: 0 0.1em;
+}
+
+.button-wrapper {
+    position: relative;
+}
+
+.play-btn {
+    all: unset;
+    cursor: pointer;
+    animation: play-btn 1s ease-in-out infinite alternate;
+    background: hsl(16, 88%, 54%);
+    border-radius: 18px;
+    border: clamp(5px, 2vw, 10px) solid hsl(358, 85%, 52%);
+    color: #fff;
+    font-size: clamp(1.5rem, 10vw, 6rem);
+    line-height: 1;
+    padding: 1rem 3rem;
+    text-shadow: 4px 5px 0px #000;
+    transition: .4s;
+    width: clamp(12rem, 60vw, 40rem);
+    will-change: transform;
+}
+
+.play-btn:hover {
+    background-color: hsl(16, 88%, 48%);
+}
+
+.joystick {
+    position: absolute;
+    right: clamp(-10%, -8vw, -15%);
+    top: 30%;
+    transform: rotate(-90deg);
+    width: clamp(50px, 10vw, 100px);
+    z-index: -1;
+}
+
+@-moz-document url-prefix() {
+  h1 {
+    -webkit-text-stroke: 4px #f15a24;
+  }
+}
+
+@keyframes play-btn {
+    to {
+        transform: translateY(15px);
+    }
 }
