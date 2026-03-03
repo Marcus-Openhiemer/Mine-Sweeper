@@ -1,3 +1,8 @@
+const startGameBTn = document.getElementById('startGameBtn');
+const gamePage = document.getElementById('game-start');
+const homePage = document.getElementById('home-page');
+const backBtn = document.getElementById('back-btn');
+
 const table = document.getElementById('table');
 const grid = [];
 const level = document.getElementById('selectLevel');
@@ -12,6 +17,56 @@ let seconds = 0;
 
 let isFlagMode = false;
 const modeToggler = document.getElementById('mode-toggler');
+
+const popMenu = document.getElementById('pop-up-menu');
+const popMenuHeading = document.getElementById('pop-up__heading');
+const currentScore = document.getElementById('currentScore');
+const hightScore = document.getElementById('highScore');
+const popUpPlayBtn = document.getElementById('pop-up__play-btn');
+const popUpQuiteBtn = document.getElementById('pop-up__quite-btn');
+
+const popSound = document.getElementById('popSound');
+const applauseSound = document.getElementById('applauseSound');
+const sadSound = document.getElementById('sadSound');
+const bigExplosionSound = document.getElementById('explosion');
+
+function showPopMenu(isWin) {
+    if(isWin) {
+        popMenuHeading.classList.remove('lose');
+        applauseSound.play();
+        popMenuHeading.textContent = 'You Win';
+        currentScore.textContent = timerDisplay.textContent;
+        checkRecord();
+    }
+    else {
+        popMenuHeading.classList.add('lose');
+        setTimeout(() => {
+            sadSound.play();
+        }, 3000);
+        popMenuHeading.textContent = 'You Lose';
+        currentScore.textContent = '--:--';
+    }  
+    popMenu.style.top = '50%';
+}
+
+function removePopMenu() {
+    popMenu.style.top = '-50%';
+}
+
+function checkRecord() {
+    const levelName = level.value;
+    const savedBest = localStorage.getItem(`bestTime_${levelName}`);
+
+    if(!savedBest || seconds < parseInt(savedBest)) {
+        localStorage.setItem(`bestTime_${levelName}`, seconds);
+        hightScore.textContent = timerDisplay.textContent;
+    } 
+    else {
+        let bestMin = Math.floor(savedBest / 60).toString().padStart(2,'0');
+        let bestSecond = Math.floor(savedBest % 60).toString().padStart(2,'0');
+        hightScore.textContent = `${bestMin}:${bestSecond}`;
+    }
+}
 
 function changeFlagMode() {
     if(isFlagMode) {
@@ -94,6 +149,7 @@ function designNumbers(tile) {
 
 // Display grid based on the level chosen
 function selectLevel() {
+    removePopMenu();
     const selectedLevel = level.value;
     let rows;
     let cols;
@@ -115,6 +171,17 @@ function selectLevel() {
         cols = 10;
         grid.totalBombs = 32;
     }
+
+    const levelName = level.value;
+    const savedBest = localStorage.getItem(`bestTime_${levelName}`);
+    if (savedBest) {
+        const bestMins = Math.floor(savedBest / 60).toString().padStart(2, '0');
+        const bestSecs = (savedBest % 60).toString().padStart(2, '0');
+        hightScore.textContent = `${bestMins}:${bestSecs}`;
+    } else {
+        hightScore.textContent = "N/A";
+    }
+
     table.innerHTML = '';
     table.style.pointerEvents = 'auto';
     table.style.setProperty('--cols', cols);
@@ -176,8 +243,9 @@ function revealTiles(row, col) {
 
     if(grid[row][col] === 'b') {
         stopTimer();
-        alert('BOOM! Game Over!');
+        bigExplosionSound.play();
         revealBombs();
+        showPopMenu(false);
     }
 
     if(grid[row][col] === 0)
@@ -218,11 +286,12 @@ function addEventListeners() {
                 startTimer();
                 const r = parseInt(tile.dataset.row);
                 const c = parseInt(tile.dataset.col);
+                popSound.cloneNode(true).play();
                 revealTiles(r,c);
                 if(isGameOver()) {
                     stopTimer();
-                    alert("you won");
                     revealBombs();
+                    showPopMenu(true);
                 }
             }
             else {
@@ -265,6 +334,40 @@ function addEventListeners() {
     }
 }
 
+function startGame() {
+    homePage.style.display = 'none';
+    document.querySelector('body.home').classList.remove('home');
+    gamePage.style.display = 'block';
+}
+
+function backToHome() {
+    gamePage.style.display = 'none';
+    homePage.style.display = 'flex';
+    document.querySelector('body').classList.add('home');
+}
+
 selectLevel();
-level.addEventListener('change', selectLevel);
-modeToggler.addEventListener('click', changeFlagMode);
+level.addEventListener('change', ()=> {
+    popSound.play();
+    selectLevel();
+});
+startGameBTn.addEventListener('click', ()=> {
+    popSound.play();
+    startGame();
+});
+modeToggler.addEventListener('click', ()=> {
+    popSound.play();
+    changeFlagMode();
+});
+popUpPlayBtn.addEventListener('click', ()=> {
+    popSound.play();
+    selectLevel();
+});
+popUpQuiteBtn.addEventListener('click', ()=> {
+    popSound.play();
+    backToHome();
+});
+backBtn.addEventListener('click',()=> {
+    popSound.play();
+    backToHome();
+});
