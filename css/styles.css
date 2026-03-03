@@ -172,14 +172,19 @@ body.home {
 }
 
 .game-header__back {
+    align-items: start;
     background-color: transparent;
-    outline: 0;
     border: 0;
-    width: 30px;
+    cursor: pointer;
     display: flex;
     justify-content: center;
-    align-items: start;
-    cursor: pointer;
+    outline: 0;
+    transition: transform .5s ease;
+    width: 30px;
+}
+
+.game-header__back:hover {
+    transform: translateX(20%);
 }
 
 .img-wrapper {
@@ -284,7 +289,7 @@ h1 {
 
 .home__joystick {
     position: absolute;
-    right: clamp(-10%, -8vw, -15%);
+    right: clamp(-15%, -8vw, -10%);
     top: 30%;
     transform: rotate(-90deg);
     width: clamp(50px, 10vw, 100px);
@@ -307,14 +312,14 @@ h1 {
 .btn {
     border-radius: 12px;
     outline: 0;
-    width: 100px;
-    padding: .5rem 1rem;
+    width: clamp(7rem, 40vw, 10rem);
+    padding: .5rem;
     line-height: 1;
     box-shadow: inset 5px 5px 10px hsla(0,0%,100%, 20%),
         0 5px 5px hsla(0,0%,0%, 30%);
     text-shadow: 0 -2px 10px hsla(0,0%,100%, 18%)
     ,0 5px 5px hsla(0,0%,0%, 20%);
-    font-size: 2.2rem;
+    font-size: clamp(1.8rem, 8vw, 2.2rem);
     transition: .4s ease;
 }
 
@@ -336,4 +341,67 @@ h1 {
 
 .btn--quite:hover {
     background-color: hsl(0, 100%, 38%);
+}
+
+/* pop-up menu */
+
+.pop-up-menu {
+    background-color: #f8a23b;
+    border-radius: 32px;
+    border: 10px solid #ff4c33;
+    box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.8);
+    height: auto;
+    left: 50%;
+    padding: 3rem 2rem;
+    position: fixed;
+    text-align: center;
+    text-wrap: nowrap;
+    top: -50%;
+    transform: translate(-50%, -50%);
+    transition: top 1s ease-in-out;
+    width: clamp(30rem, 80vw, 50rem);
+}
+
+.pop-up__heading {
+    font-size: clamp(3rem, 20vw, 6rem);
+    margin: 0 0 1rem 0;
+    text-shadow:
+        0px -3px 0px rgba(255, 255, 255, 0.5),     
+        0px 6px 0px #103d04,     
+        0px 0px 15px rgba(234, 150, 48, 0.8);
+    -webkit-text-stroke: 2px #000;
+    color: #71c726;
+}
+
+.pop-up__heading.lose {
+    text-shadow:
+        0px -3px 0px rgba(255, 255, 255, 0.5),     
+        0px 6px 0px #103d04,     
+        0px 0px 15px rgba(234, 150, 48, 0.8);
+    -webkit-text-stroke: 2px #1e1313;
+    color: #d40303;
+}
+
+.pop-up__current-score {
+    align-items: center;
+    display: flex;
+    font-size: clamp(1.6rem, 10vw ,2.5rem);
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: .8rem;
+    text-shadow: 0px 1px 1px rgba(0, 0, 0, .7);
+}
+
+.pop-up__high-score {
+    align-items: center;
+    color: #9A0303;
+    display: flex;
+    font-size: clamp(1.4rem, 8vw, 1.8rem);
+    gap: .8rem;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+#game-start {
+    display: none;
 }
