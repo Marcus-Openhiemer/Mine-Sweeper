@@ -28,7 +28,8 @@ const popUpQuiteBtn = document.getElementById('pop-up__quite-btn');
 const popSound = document.getElementById('popSound');
 const applauseSound = document.getElementById('applauseSound');
 const sadSound = document.getElementById('sadSound');
-const bigExplosionSound = document.getElementById('explosion');
+const bigExplosionSound = document.getElementById('explosionSound');
+const tickSound = document.getElementById('tickSound');
 
 function showPopMenu(isWin) {
     if(isWin) {
@@ -302,12 +303,14 @@ function addEventListeners() {
                     tile.classList.replace('tile--unopened', 'tile--unopened--flagged');
                     tile.innerHTML = `<img src="img/flag.png" alt="">`;
                     currentFlag++;
+                    tickSound.cloneNode(true).play();
                     displayRemainingBombs();
                 }
                 else if (isFlagged){
                     tile.classList.replace('tile--unopened--flagged', 'tile--unopened');
                     tile.innerHTML = tile.oldContent;
                     currentFlag--;
+                    tickSound.cloneNode(true).play();
                     displayRemainingBombs();
                 }
             }
@@ -322,12 +325,14 @@ function addEventListeners() {
                 tile.classList.replace('tile--unopened', 'tile--unopened--flagged');
                 tile.innerHTML = `<img src="img/flag.png" alt="">`;
                 currentFlag++;
+                tickSound.cloneNode(true).play();
                 displayRemainingBombs();
             }
             else if (isFlagged){
                 tile.classList.replace('tile--unopened--flagged', 'tile--unopened');
                 tile.innerHTML = tile.oldContent;
                 currentFlag--;
+                tickSound.cloneNode(true).play();
                 displayRemainingBombs();
             }
         })
