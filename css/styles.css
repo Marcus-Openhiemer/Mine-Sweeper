@@ -57,6 +57,7 @@ body {
     font-size: 2.6rem;
     min-height: 100vh;
     max-height: 100vh;
+    overflow: hidden;
 }
 
 p {
@@ -387,6 +388,7 @@ h1 {
         0px 0px 15px rgba(234, 150, 48, 0.8);
     -webkit-text-stroke: 2px #000;
     color: #71c726;
+    text-wrap: nowrap;
 }
 
 .pop-up__heading.lose {
