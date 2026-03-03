@@ -1,3 +1,19 @@
+@font-face {
+    font-family: 'Molen Friend Demo';
+    src: url('../fonts/Molen\ Friend\ Demo.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Constance';
+    src: url('../fonts/Constance-7BLXE.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 :root {
     --bg-primary: radial-gradient(hsl(28, 100%, 51%), hsl(0, 91%, 41%));
     --bg-secondary: linear-gradient(hsl(26, 100%, 50%), hsl(51, 100%, 45%));
